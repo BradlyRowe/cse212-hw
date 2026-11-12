@@ -40,12 +40,19 @@ public class TakingTurnsQueue
         else
         {
             Person person = _people.Dequeue();
-            if (person.Turns > 1)
+            if (person.Turns <= 0)
             {
-                person.Turns -= 1;
+                // Infinite turns
+                _people.Enqueue(person);
+            }
+            else if (person.Turns > 1)
+            {
+                // Finite turns remaining
+                person.Turns--;
                 _people.Enqueue(person);
             }
 
+            // If Turns == 1, do not re-enqueue.
             return person;
         }
     }
